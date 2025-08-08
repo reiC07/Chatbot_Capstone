@@ -11,6 +11,10 @@ import requests
 import base64
 from io import BytesIO
 from streamlit_extras.let_it_rain import rain
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 st.set_page_config(
     page_title="Chatbot Title", 
@@ -20,8 +24,12 @@ st.set_page_config(
     menu_items=None
 )
 
-# Set OpenAI API key
-openai.api_key = st.secrets.openai.api_key
+# ✅ Retrieve OpenAI API key from .env
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
+# Optional: Check if key is loaded
+if not openai.api_key:
+    st.error("OpenAI API key not found. Please set it in your .env file.")
 
 @st.cache_resource(show_spinner=False)
 def load_data():
@@ -113,5 +121,6 @@ if st.session_state.messages[-1]["role"] != "assistant":
             
             # Append the assistant's response to the chat history
             st.session_state.messages.append({"role": "assistant", "content": response.response})
+
 
 
