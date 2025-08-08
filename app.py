@@ -114,3 +114,4 @@ if st.session_state.messages[-1]["role"] != "assistant":
             # Append the assistant's response to the chat history
             st.session_state.messages.append({"role": "assistant", "content": response.response})
 
+
